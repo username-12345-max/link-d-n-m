@@ -1,4 +1,4 @@
-# 📡 link-donusum
+# 📡 link-d-n-m
 
 ## 🔄 Dönüşüm Kuralları
 
