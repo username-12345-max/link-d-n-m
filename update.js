@@ -1,0 +1,26 @@
+const axios = require('axios');
+const fs = require('fs');
+const cron = require('node-cron');
+
+const sourceUrl = 'https://borutv.boncuuktv.workers.dev/kablotv.m3u';
+
+function guncelle() {
+  axios.get(sourceUrl).then(response => {
+    let content = response.data;
+    content = content.replace(/https:\/\/ottcdn\.kablowebtv\.net/g, 'http://ottcdn.kablowebtv.net');
+    fs.writeFileSync('SSKBL.m3u', content);
+    console.log('✅ Dosya başarıyla dönüştürüldü!');
+  }).catch(error => {
+    console.error('❌ İndirme hatası:', error);
+  });
+}
+
+// Her gün saat 06:30'da çalıştır
+cron.schedule('30 6 * * *', () => {
+  console.log('⏰ Otomatik güncelleme başlatıldı...');
+  guncelle();
+});
+
+// Manuel çalıştırma için
+guncelle();
+
