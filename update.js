@@ -1,26 +1,26 @@
-const axios = require('axios');
-const fs = require('fs');
-const cron = require('node-cron');
+const fs = require("fs");
 
-const sourceUrl = 'https://borutv.boncuuktv.workers.dev/kablotv.m3u';
+const SOURCE_FILE = "kablotv.m3u";
+const TARGET_FILE = "SSKBL.m3u";
 
-function guncelle() {
-  axios.get(sourceUrl).then(response => {
-    let content = response.data;
-    content = content.replace(/https:\/\/ottcdn\.kablowebtv\.net/g, 'http://ottcdn.kablowebtv.net');
-    fs.writeFileSync('SSKBL.m3u', content);
-    console.log('✅ Dosya başarıyla dönüştürüldü!');
-  }).catch(error => {
-    console.error('❌ İndirme hatası:', error);
-  });
+function convertLine(line) {
+  // https yerine http
+  line = line.replace("https://ottcdn.kablowebtv.net", "http://ottcdn.kablowebtv.net");
+
+  // wmsAuthSign parametresini koru
+  const match = line.match(/wmsAuthSign=[A-Za-z0-9]+/);
+  if (match) {
+    console.log("Bulunan wmsAuthSign:", match[0]);
+  }
+
+  return line;
 }
 
-// Her gün saat 06:30'da çalıştır
-cron.schedule('30 6 * * *', () => {
-  console.log('⏰ Otomatik güncelleme başlatıldı...');
-  guncelle();
-});
+function updatePlaylist() {
+  const lines = fs.readFileSync(SOURCE_FILE, "utf-8").split("\n");
+  const updatedLines = lines.map(convertLine);
+  fs.writeFileSync(TARGET_FILE, updatedLines.join("\n"), "utf-8");
+  console.log(`Playlist güncellendi: ${TARGET_FILE}`);
+}
 
-// Manuel çalıştırma için
-guncelle();
-
+updatePlaylist();
