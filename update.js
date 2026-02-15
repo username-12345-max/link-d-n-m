@@ -1,26 +1,31 @@
 const fs = require("fs");
+const axios = require("axios");
 
-const SOURCE_FILE = "kablotv.m3u";
+// Kaynak playlist URL'sini buraya yaz
+const SOURCE_URL = "https://borutv.boncuuktv.workers.dev/kablotv.m3u";
 const TARGET_FILE = "SSKBL.m3u";
 
-function convertLine(line) {
-  // https yerine http
-  line = line.replace("https://ottcdn.kablowebtv.net", "http://ottcdn.kablowebtv.net");
+async function updatePlaylist() {
+  try {
+    // Kaynak playlisti internetten çek
+    const response = await axios.get(SOURCE_URL);
+    const lines = response.data.split("\n");
 
-  // wmsAuthSign parametresini koru
-  const match = line.match(/wmsAuthSign=[A-Za-z0-9]+/);
-  if (match) {
-    console.log("Bulunan wmsAuthSign:", match[0]);
+    // HTTPS → HTTP dönüşümü ve wmsAuthSign parametresini koruma
+    const updatedLines = lines.map(line => {
+      if (line.startsWith("https://ottcdn.kablowebtv.net")) {
+        // URL içindeki wmsAuthSign parametresini koruyarak http'ye çevir
+        return line.replace("https://ottcdn.kablowebtv.net", "http://ottcdn.kablowebtv.net");
+      }
+      return line;
+    });
+
+    // Yeni playlist dosyasını yaz
+    fs.writeFileSync(TARGET_FILE, updatedLines.join("\n"), "utf-8");
+    console.log(`Playlist güncellendi: ${TARGET_FILE}`);
+  } catch (err) {
+    console.error("Playlist çekilirken hata:", err.message);
   }
-
-  return line;
-}
-
-function updatePlaylist() {
-  const lines = fs.readFileSync(SOURCE_FILE, "utf-8").split("\n");
-  const updatedLines = lines.map(convertLine);
-  fs.writeFileSync(TARGET_FILE, updatedLines.join("\n"), "utf-8");
-  console.log(`Playlist güncellendi: ${TARGET_FILE}`);
 }
 
 updatePlaylist();
