@@ -1,4 +1,4 @@
-#EXTM3U
+#EXTM3U x-tvg-url="https://raw.githubusercontent.com/ghokun/tv/main/bin/guide.xml"
 
 # Ulusal Kanallar
 #EXTINF:-1 tvg-id="KANAL D.tr" tvg-name="Kanal D" tvg-logo="https://zdi2vdd5r0wt.merlincdn.net/content/a/-p/245931/logo.png?v=638804938239723164" group-title="Ulusal",Kanal D
