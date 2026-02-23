@@ -6,7 +6,7 @@ http://104.238.23.221/dsgo.php?id=245931
 
 #EXTINF:-1 tvg-id="TV2.tr" tvg-name="TV2" tvg-logo="https://zdi2vdd5r0wt.merlincdn.net/content/B/WE/245991/logo.png?v=639029456898926668" group-title="Ulusal",TV2
 http://104.238.23.221/dsgo.php?id=245991
-
+http://104.238.23.221/dsgo.php?proxy=https%3A%2F%2Fdemiroren.daioncdn.net%2Fteve2%2Fteve2.m3u8%3Fuserid%3Ded0%26rid%3D26a82b92eb52434ffa1f356a419dd162%26st%3Domh6_0yPFPxbPLVlcxp7pQ%26e%3D1771885972%26app%3Ddsmart_android%26ce%3D2
 #EXTINF:-1 tvg-id="SHOW TV.tr" tvg-name="Show TV" tvg-logo="https://zdi2vdd5r0wt.merlincdn.net/content/X/rT/245949/logo.png?v=638671713564122216" group-title="Ulusal",Show TV
 http://104.238.23.221/dsgo.php?id=245949
 
